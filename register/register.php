@@ -1,3 +1,50 @@
+<?php
+include "../chatbox/processes/functions.php";
+
+if(isset($_POST['registration-submit'])) {
+    $firstname = sanitizer($_POST['firstname']);
+    $lastname = sanitizer($_POST['lastname']);
+    $email = sanitizer($_POST['email']);
+    $country_code = sanitizer($_POST['countryCode']);
+    $phn_num = ( $country_code == '+880' ? ltrim( sanitizer($_POST['phone']), '0') : sanitizer($_POST['phone']) );
+    $password = sanitizer($_POST['password']);
+    $password_confirmation = sanitizer($_POST['passwordConfirmation']);
+
+    if($firstname == null) {
+        $error['firstname'] = "The First Name is empty!";
+    } if($lastname == null) {
+        $error['lastname'] = "The Last Name is empty!";
+    } if($email == null) {
+        $error['email'] = "The email is empty!";
+    } if($email == null) {
+        $error['email'] = "The email is empty!";
+    } elseif (filter_var($email, FILTER_VALIDATE_EMAIL) == false){
+        $error['email'] = "\"$email\" is not a valid email address";
+    } elseif ($connection->query("SELECT * FROM `users` WHERE email = '$email' ")->num_rows > 0){
+        $error['email'] = "\"$email\" is already registered!";
+    } if($phn_num == null) {
+        $error['phn_num'] = "The Phone Number is empty!";
+    } elseif(ctype_digit($phn_num) == false) {
+        $error['phn_num'] = "Please enter digits only!";
+    } if($password == null || $password_confirmation == null) {
+        $error['password'] = "The Password or Confirm Password is empty!";
+    } elseif ($password != $password_confirmation) {
+        $error['password'] = "The Passwords doesn't match!";
+    } elseif (strlen($password) <= 5) {
+        $error['password'] = "The cannot be lees than 6 characters!";
+    }
+
+
+    if(!isset($error)) {
+        $submit_registration = $connection->query("INSERT INTO `users` (`usr_id`, `firstname`, `lastname`, `email`, `phn_num`, `password`, `created`)
+        VALUES (NULL, '$firstname', '$lastname', '$email', '$country_code$phn_num', '$password', CURRENT_TIMESTAMP) ");
+        custom_query_error($submit_registration);
+    }
+
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,64 +64,82 @@
     <div class="row  align-items-center">
         <!-- For Demo Purpose -->
         <div class="col-md-6">
-            <img style="width: 15em; display: block; margin: auto;" src="../assets/images/logo.svg" alt="logo" class="logo py-5 pt-md-0">
+            <a href="../"><img style="width: 15em; display: block; margin: auto;" src="../assets/images/logo.svg" alt="logo" class="logo py-5 pt-md-0"></a>
             <img src="images/form_d9sh6m.svg" alt="" class="img-fluid mb-3 d-none d-md-block">
         </div>
 
         <!-- Registeration Form -->
         <div class="col-md-6 col-lg-6 ml-auto">
-            <h2 class="text-center pb-4 d-block m-auto">Create an <u>Account</u></h2>
-            <form action="#">
+            <h2 class="text-center pb-4 d-block m-auto"><?php echo isset($_POST['registration-submit']) && !isset($error) ? "You're Registered. Please, <a href='../'><u>Log In</u></a>" : "Create an <u>Account</u>" ;  ?></h2>
+            <form class="<?php echo isset($_POST['registration-submit']) && !isset($error) ? "d-none" : ""; ?>" action="register.php" method="POST">
                 <div class="row">
 
                     <!-- First Name -->
-                    <div class="input-group col-lg-6 mb-4">
+                    <div class="input-group col-lg-6">
                         <div class="input-group-prepend">
                             <span class="input-group-text bg-white px-4 border-md border-right-0">
                                 <i class="fa fa-user text-muted"></i>
                             </span>
                         </div>
-                        <input id="firstName" type="text" name="firstname" placeholder="First Name" class="form-control bg-white border-left-0 border-md">
+                        <input id="firstName" type="text" name="firstname" value="<?php echo isset($firstname) && isset($error) ? $firstname : ""; ?>" placeholder="First Name" class="form-control bg-white border-left-0 border-md">
                     </div>
 
                     <!-- Last Name -->
-                    <div class="input-group col-lg-6 mb-4">
+                    <div class="input-group col-lg-6">
                         <div class="input-group-prepend">
                             <span class="input-group-text bg-white px-4 border-md border-right-0">
                                 <i class="fa fa-user text-muted"></i>
                             </span>
                         </div>
-                        <input id="lastName" type="text" name="lastname" placeholder="Last Name" class="form-control bg-white border-left-0 border-md">
+                        <input id="lastName" type="text" name="lastname" value="<?php echo isset($lastname) && isset($error) ? $lastname : ""; ?>" placeholder="Last Name" class="form-control bg-white border-left-0 border-md">
+                    </div>
+
+                    <!-- Errors Printing -->
+                    <div class="col-lg-6 mb-4">
+                        <small class="text-danger"><?php echo isset($error['firstname']) ? $error['firstname'] : ""; ?></small>
+                    </div>
+                    <div class="col-lg-6 mb-4">
+                        <small class="text-danger"><?php echo isset($error['lastname']) ? $error['lastname'] : ""; ?></small>
                     </div>
 
                     <!-- Email Address -->
-                    <div class="input-group col-lg-12 mb-4">
+                    <div class="input-group col-lg-12">
                         <div class="input-group-prepend">
                             <span class="input-group-text bg-white px-4 border-md border-right-0">
                                 <i class="fa fa-envelope text-muted"></i>
                             </span>
                         </div>
-                        <input id="email" type="email" name="email" placeholder="Email Address" class="form-control bg-white border-left-0 border-md">
+                        <input id="email" type="email" name="email" value="<?php echo isset($email) && isset($error) ? $email : ""; ?>" placeholder="Email Address" class="form-control bg-white border-left-0 border-md">
+                    </div>
+
+                    <!-- Errors Printing -->
+                    <div class="col-lg-12 mb-4">
+                        <small class="text-danger"><?php echo isset($error['email']) ? $error['email'] : ""; ?></small>
                     </div>
 
                     <!-- Phone Number -->
-                    <div class="input-group col-lg-12 mb-4">
+                    <div class="input-group col-lg-12">
                         <div class="input-group-prepend">
                             <span class="input-group-text bg-white px-4 border-md border-right-0">
                                 <i class="fa fa-phone-square text-muted"></i>
                             </span>
                         </div>
                         <select id="countryCode" name="countryCode" style="max-width: 80px" class="custom-select form-control bg-white border-left-0 border-md h-100 font-weight-bold text-muted">
-                            <option value="">+12</option>
-                            <option value="">+10</option>
-                            <option value="">+15</option>
-                            <option value="">+18</option>
+                            <option value="+880">+880</option>
+                            <option value="+91">+91</option>
+                            <option value="+92">+92</option>
+                            <option value="+1">+1</option>
                         </select>
-                        <input id="phoneNumber" type="tel" name="phone" placeholder="Phone Number" class="form-control bg-white border-md border-left-0 pl-3">
+                        <input id="phoneNumber" type="tel" name="phone" value="<?php echo isset($phn_num) && isset($error) ? $phn_num : ""; ?>" placeholder="Phone Number" class="form-control bg-white border-md border-left-0 pl-3">
+                    </div>
+
+                    <!-- Errors Printing -->
+                    <div class="col-lg-12 mb-4">
+                        <small class="text-danger"><?php echo isset($error['phn_num']) && isset($error) ? $error['phn_num'] : ""; ?></small>
                     </div>
 
                     <!-- Password -->
-                    <div class="input-group col-lg-6 mb-4">
+                    <div class="input-group col-lg-6">
                         <div class="input-group-prepend">
                             <span class="input-group-text bg-white px-4 border-md border-right-0">
                                 <i class="fa fa-lock text-muted"></i>
@@ -84,20 +149,24 @@
                     </div>
 
                     <!-- Password Confirmation -->
-                    <div class="input-group col-lg-6 mb-4">
+                    <div class="input-group col-lg-6">
                         <div class="input-group-prepend">
                             <span class="input-group-text bg-white px-4 border-md border-right-0">
                                 <i class="fa fa-lock text-muted"></i>
                             </span>
                         </div>
-                        <input id="passwordConfirmation" type="text" name="passwordConfirmation" placeholder="Confirm Password" class="form-control bg-white border-left-0 border-md">
+                        <input id="passwordConfirmation" type="password" name="passwordConfirmation" placeholder="Confirm Password" class="form-control bg-white border-left-0 border-md">
+                    </div>
+                    <!-- Errors Printing -->
+                    <div class="col-lg-12 mb-4">
+                        <small class="text-danger"><?php echo isset($error['password']) && isset($error) ? $error['password'] : ""; ?></small>
                     </div>
 
                     <!-- Submit Button -->
                     <div class="form-group col-lg-12 mx-auto mb-0">
-                        <a href="#" class="btn btn-dark btn-block py-2">
+                        <button type="submit" name="registration-submit" href="#" class="btn btn-dark btn-block py-2">
                             <span class="font-weight-bold">Create your account</span>
-                        </a>
+                        </button>
                     </div>
 
                     <!-- Divider Text -->
