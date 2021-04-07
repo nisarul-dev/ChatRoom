@@ -1,6 +1,11 @@
 <?php
 include "chatbox/processes/functions.php";
 
+if(isset($_SESSION['id'])) {
+	header("Location: chatbox");
+}
+
+
 if(isset($_POST['login'])) {
 
     $username = sanitizer($_POST['email']);
@@ -15,9 +20,14 @@ if(isset($_POST['login'])) {
 
     $phone = substr($username, -9);
     if(!isset($error)) {
-      $log_in = $connection->query("SELECT * FROM `users` WHERE (`email`='$username' OR `phn_num` LIKE '%$phone') AND `password`='$password' ")->num_rows;
+      $login_table = $connection->query("SELECT * FROM `users` WHERE (`email`='$username' OR `phn_num` LIKE '%$phone') AND `password`='$password' ");
+      $log_in = $login_table->num_rows;
       if($log_in > 0) {
-        echo "Have to log in";
+        $login_table_obj = $login_table->fetch_object();
+        echo $_SESSION['id'] = $login_table_obj->usr_id;
+        echo $_SESSION['firstname'] = $login_table_obj->firstname;
+        echo $_SESSION['lastname'] = $login_table_obj->lastname;
+        header("Location: chatbox");
       } else {
         $error = "Email or Phone Number or password is incorrect !";
       }

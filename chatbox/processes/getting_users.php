@@ -5,19 +5,32 @@ include "functions.php";
 
 $user_table = $connection->query("SELECT * FROM users");
 
-while($user_table_obj = $user_table->fetch_object() ) : ?>
+while($user_table_obj = $user_table->fetch_object() ) :
+if($user_table_obj->usr_id != $_SESSION['id']) : ?>
 
-<li class="active">
-    <div class="d-flex bd-highlight">
+
+<li class="active contact-item" data-user-id="<?php echo $user_table_obj->usr_id; ?>">
+    <div class="d-flex bd-highlight" >
         <div class="img_cont">
             <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img">
             <span class="online_icon"></span>
         </div>
         <div class="user_info">
             <span><?php echo $user_table_obj->firstname; ?></span>
-            <p><?php echo "Last message" . " ..."; ?></p>
+            <p>
+            <?php
+                    $author_id = $_SESSION['id'];
+                    $receiver_id = $user_table_obj->usr_id;
+                    $last_message = $connection->query("SELECT `message` FROM `chats` WHERE (receiver_id = $receiver_id AND author_id = $author_id) OR (receiver_id = $receiver_id AND author_id = $author_id ) ORDER BY `msg_id` DESC ");
+                    if($last_message->num_rows < 1) {
+                        echo "No Messages";
+                    } else {
+                        echo substr($last_message->fetch_object()->message, "0", "30") . " ...";
+                    }
+                ?>
+            </p>
         </div>
     </div>
 </li>
 
-<?php endwhile;
+<?php endif; endwhile;

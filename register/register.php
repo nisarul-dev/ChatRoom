@@ -1,6 +1,11 @@
 <?php
 include "../chatbox/processes/functions.php";
 
+if(isset($_SESSION['id'])) {
+	header("Location: ../chatbox");
+}
+
+
 if(isset($_POST['registration-submit'])) {
     $firstname = sanitizer($_POST['firstname']);
     $lastname = sanitizer($_POST['lastname']);

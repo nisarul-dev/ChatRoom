@@ -1,4 +1,9 @@
-<?php require_once "includes/header.php"; ?>
+<?php require_once "includes/header.php";
+session_start();
+if(!isset($_SESSION['id'])) {
+	header("Location: ../");
+}
+?>
 
 <div id="message1"></div>
 <div class="container-fluid h-100">

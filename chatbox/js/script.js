@@ -7,4 +7,8 @@ $(document).ready(function(){
         emojiPlaceholder: ":smile_cat:"
     });
 
+
+
+
+
 });
