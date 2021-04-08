@@ -13,9 +13,22 @@ $.post(url2, {},
             window.receiver_id = e.currentTarget.attributes['data-user-id'].value;
             $(".contacts_body .contacts .contact-item").removeClass("active");
             e.currentTarget.className = "active contact-item";
+
+            // Getting the message header Part-I
+            window.currentReceiverName = $(".contacts .active .user_info span").html();
+            window.currentReceiverPhoto = $(".contacts .active .img_cont img").attr('src');
+            $(".msg_head .user_info .receiver-name").html(window.currentReceiverName);
+            $(".msg_head .img_cont img").attr('src', window.currentReceiverPhoto);
         });
+
+        // Getting the message header Part-I
+        window.currentReceiverName = $(".contacts .active .user_info span").html();
+        window.currentReceiverPhoto = $(".contacts .active .img_cont img").attr('src');
+        $(".msg_head .user_info .receiver-name").html(window.currentReceiverName);
+        $(".msg_head .img_cont img").attr('src', window.currentReceiverPhoto);
     }
 );
+
 
 // Getting the message
 var url = "processes/getting_messages.php";
@@ -60,16 +73,4 @@ scrolldown(".message-body");
 function scrolldown(document) {
     $(document).scrollTop($(document).height());
 }
-
-
-$('#message-form').keyup(function (e) {
-    if (e.which == 13) {
-        // e.preventDefault;
-        // alert("Hello");
-        $('#textarea1').submit();
-        // $('#message-form button[type="submit"]').clicked();
-        // return false;
-  }
-});
-
 

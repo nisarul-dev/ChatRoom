@@ -6,7 +6,7 @@
 
 		<?php require_once "includes/chat-left-side-bar.php"; ?>
 
-		<div class="col-md-8 col-xl-6 chat">
+		<div class="col-md-8 col-xl-6 chat" id="to-message">
 			<div class="card">
 
 				<?php require_once "includes/chat-box-header.php"; ?>

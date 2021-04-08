@@ -4,6 +4,7 @@ body,html{
     background: #7F7FD5;
     background: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
     background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+    scroll-behavior: smooth;
 }
 .chat{
     margin-top: auto;
@@ -259,4 +260,10 @@ margin: 0;
     .contacts_card{
         margin-bottom: 15px !important;
     }
+
+    .submit-btn div button {
+    width: 14.5vw;
+    padding: 1em 0 ;
+    border-bottom-right-radius: 15px;
+}
 }

@@ -5,7 +5,7 @@
             <span class="online_icon"></span>
         </div>
         <div class="user_info">
-            <span>Chat with <span class="receiver-name"><?php echo $_SESSION['firstname']; ?></span></span>
+            <span style="font-size: 0.95em;">Chat with <span class="receiver-name"></span></span>
         </div>
         <!-- <div class="video_cam">
             <span><i class="fas fa-video"></i></span>

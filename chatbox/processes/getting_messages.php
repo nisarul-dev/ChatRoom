@@ -21,15 +21,18 @@ if (isset($_POST['receiver'])) {
                     <span class="msg_time_send"><?php echo get_sweet_time($chat_table_obj->created); ?></span>
                 </div>
                 <div class="img_cont_msg">
-                    <img src="images/users/usericon-self.png" class="rounded-circle user_img_msg">
+                    <img src="images/users/<?php echo !empty($_SESSION['profile_img']) ? $_SESSION['profile_img'] : "usericon-self.png" ?>" class="rounded-circle user_img_msg">
                 </div>
             </div>
         <?php endif; ?>
 
-        <?php if ($chat_table_obj->author_id == $receiver_id) : ?>
+        <?php if ($chat_table_obj->author_id == $receiver_id) :
+            $receiver_table = $connection->query("SELECT * FROM users WHERE usr_id = $receiver_id");
+            $receiver_table_obj = $receiver_table->fetch_object();
+            ?>
             <div class="d-flex justify-content-start mb-4">
                 <div class="img_cont_msg">
-                    <img src="images/users/usericon-sender.png" class="rounded-circle user_img_msg">
+                    <img src="images/users/<?php echo !empty($receiver_table_obj->profile_img) ? $receiver_table_obj->profile_img : "usericon-sender.png" ?>" class="rounded-circle user_img_msg">
                 </div>
                 <div class="msg_cotainer" style="min-width: 7em;">
                     <?php echo $chat_table_obj->message; ?>
