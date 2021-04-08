@@ -59,9 +59,3 @@ function get_sweet_time($current_timestamp) {
 }
 
 
-// $hello = $connection->query("SELECT `message` FROM `chats` WHERE (receiver_id = 3 AND author_id = 1) OR (receiver_id = 1 AND author_id = 3 ) ORDER BY `msg_id` DESC ")->fetch_object()->message;
-
-
-
-
-

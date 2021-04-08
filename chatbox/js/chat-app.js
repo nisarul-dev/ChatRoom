@@ -11,10 +11,11 @@ $.post(url2, {},
 
         $(".contacts_body .contacts .contact-item").click(function(e) {
             window.receiver_id = e.currentTarget.attributes['data-user-id'].value;
+            $(".contacts_body .contacts .contact-item").removeClass("active");
+            e.currentTarget.className = "active contact-item";
         });
     }
 );
-
 
 // Getting the message
 var url = "processes/getting_messages.php";
@@ -61,6 +62,14 @@ function scrolldown(document) {
 }
 
 
-
+$('#message-form').keyup(function (e) {
+    if (e.which == 13) {
+        // e.preventDefault;
+        // alert("Hello");
+        $('#textarea1').submit();
+        // $('#message-form button[type="submit"]').clicked();
+        // return false;
+  }
+});
 
 

@@ -231,6 +231,29 @@ margin: 0;
     border-bottom-right-radius: 15px;
 }
 
+.pro-img-div .hover-div {
+    opacity: 0;
+}
+
+.pro-img-div .hover-div:hover {
+    opacity: .80;
+    transition: 300ms;
+}
+
+.pro-img-div {
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.pro-img-div .hover-div button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 2em;
+    border-radius: 150%;
+}
 
 @media(max-width: 576px){
     .contacts_card{

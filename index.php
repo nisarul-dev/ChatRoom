@@ -24,9 +24,11 @@ if(isset($_POST['login'])) {
       $log_in = $login_table->num_rows;
       if($log_in > 0) {
         $login_table_obj = $login_table->fetch_object();
-        echo $_SESSION['id'] = $login_table_obj->usr_id;
-        echo $_SESSION['firstname'] = $login_table_obj->firstname;
-        echo $_SESSION['lastname'] = $login_table_obj->lastname;
+        $_SESSION['id'] = $login_table_obj->usr_id;
+        $_SESSION['firstname'] = $login_table_obj->firstname;
+        $_SESSION['lastname'] = $login_table_obj->lastname;
+        $_SESSION['email'] = $login_table_obj->email;
+        $_SESSION['profile_img'] = $login_table_obj->profile_img;
         header("Location: chatbox");
       } else {
         $error = "Email or Phone Number or password is incorrect !";
@@ -43,7 +45,8 @@ if(isset($_POST['login'])) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Login Template</title>
+  <title>ChatRoom by Nisarul</title>
+  <link rel="shortcut icon" href="assets/images/favicon.svg" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
