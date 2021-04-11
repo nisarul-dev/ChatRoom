@@ -258,7 +258,8 @@ margin: 0;
 
 @media(max-width: 576px){
     .contacts_card{
-        margin-bottom: 15px !important;
+        margin-bottom: 50px !important;
+        margin-top: 30px im !important;
     }
 
     .submit-btn div button {

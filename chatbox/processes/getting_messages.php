@@ -10,14 +10,14 @@ if (isset($_POST['receiver'])) {
         custom_query_error($insert_message);
     }
 
-    $chat_table = $connection->query("SELECT * FROM chats WHERE (receiver_id = $receiver_id AND author_id = $author_id) OR (receiver_id = $author_id AND author_id = $receiver_id ) ORDER BY msg_id DESC");
+    $chat_table = $connection->query("SELECT * FROM chats WHERE (receiver_id = $receiver_id AND author_id = $author_id) OR (receiver_id = $author_id AND author_id = $receiver_id )");
 
     while ($chat_table_obj = $chat_table->fetch_object()) : ?>
 
         <?php if ($chat_table_obj->author_id == $author_id) : ?>
             <div class="d-flex justify-content-end mb-4">
                 <div class="msg_cotainer_send" style="min-width: 7em;">
-                    <?php echo $chat_table_obj->message; ?>
+                    <?php echo nl2br($chat_table_obj->message); ?>
                     <span class="msg_time_send"><?php echo get_sweet_time($chat_table_obj->created); ?></span>
                 </div>
                 <div class="img_cont_msg">
@@ -35,8 +35,8 @@ if (isset($_POST['receiver'])) {
                     <img src="images/users/<?php echo !empty($receiver_table_obj->profile_img) ? $receiver_table_obj->profile_img : "usericon-sender.png" ?>" class="rounded-circle user_img_msg">
                 </div>
                 <div class="msg_cotainer" style="min-width: 7em;">
-                    <?php echo $chat_table_obj->message; ?>
-                    <span class="msg_time">8:40 AM, Today</span>
+                    <?php echo nl2br($chat_table_obj->message); ?>
+                    <span class="msg_time"><?php echo get_sweet_time($chat_table_obj->created); ?></span>
                 </div>
             </div>
         <?php endif; ?>
