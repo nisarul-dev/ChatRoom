@@ -13,7 +13,7 @@ $.post(url2, {},
             window.receiver_id = e.currentTarget.attributes['data-user-id'].value;
             $(".contacts_body .contacts .contact-item").removeClass("active");
             e.currentTarget.className = "active contact-item";
-                    $(".message-body").scrollTop($(".message-body")[0].scrollHeight);
+            window.goDown = true;
 
 
             // Getting the message header Part-I
@@ -55,6 +55,11 @@ var autoLoad = setInterval(function () {
                     $(".message-body").scrollTop($(".message-body")[0].scrollHeight);
                 } else if ($(".message-body")[0].scrollTop  == 0)  {
                     $(".message-body").scrollTop($(".message-body")[0].scrollHeight);
+                }
+
+                if (window.goDown == true) {
+                    $(".message-body").scrollTop($(".message-body")[0].scrollHeight);
+                    window.goDown == false;
                 }
             }
     }
