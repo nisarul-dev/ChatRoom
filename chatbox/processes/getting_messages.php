@@ -3,6 +3,7 @@ include "functions.php";
 if (isset($_POST['receiver'])) {
     $author_id = $_SESSION['id'];
     $receiver_id = $_POST['receiver'];
+    $msg_limit = $_POST['msg_limit'] ?? 3;
 
     if (!empty($_POST['message'])) {
         $message = sanitizer($_POST['message']);
@@ -10,7 +11,7 @@ if (isset($_POST['receiver'])) {
         custom_query_error($insert_message);
     }
 
-    $chat_table = $connection->query("SELECT * FROM chats WHERE (receiver_id = $receiver_id AND author_id = $author_id) OR (receiver_id = $author_id AND author_id = $receiver_id )");
+    $chat_table = $connection->query("SELECT * FROM (SELECT * FROM chats WHERE (receiver_id = $receiver_id AND author_id = $author_id) OR (receiver_id = $author_id AND author_id = $receiver_id ) ORDER BY msg_id DESC LIMIT $msg_limit)var1  ORDER BY msg_id ASC ");
 
     while ($chat_table_obj = $chat_table->fetch_object()) : ?>
 

@@ -263,8 +263,13 @@ margin: 0;
     }
 
     .submit-btn div button {
-    width: 14.5vw;
-    padding: 1em 0 ;
-    border-bottom-right-radius: 15px;
-}
+        width: 14.5vw;
+        padding: 1em 0 ;
+        border-bottom-right-radius: 15px;
+    }
+
+    .contacts_card {
+        margin-top: 30px;
+        padding-top: 20px;
+    }
 }
